@@ -40,9 +40,14 @@ jobs:
           - platform: ubuntu-22.04
             args: ""
     runs-on: ${{ matrix.platform }}
-    env:
-      TAG: ${{ github.event.client_payload.tag || inputs.tag }}
     steps:
+      - name: Etiqueta (acepta "0.1.6" o "v0.1.6")
+        env:
+          RAW: ${{ github.event.client_payload.tag || inputs.tag }}
+        shell: bash
+        run: |
+          RAW="$(echo "$RAW" | tr -d '[:space:]')"
+          echo "TAG=v${RAW#v}" >> "$GITHUB_ENV"
       - name: Código fuente (repo privado, solo lectura)
         uses: actions/checkout@v4
         with:
