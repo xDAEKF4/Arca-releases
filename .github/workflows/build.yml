@@ -49,9 +49,9 @@ jobs:
           RAW="$(echo "$RAW" | tr -d '[:space:]')"
           echo "TAG=v${RAW#v}" >> "$GITHUB_ENV"
       - name: Código fuente (repo privado, solo lectura)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
-          repository: xDAEKF4/Arca
+          repository: ensobre/Ensobre
           ref: ${{ env.TAG }}
           token: ${{ secrets.SOURCE_TOKEN }}
           persist-credentials: false
@@ -64,7 +64,7 @@ jobs:
         with:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
       - uses: Swatinem/rust-cache@v2
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -78,8 +78,8 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           projectPath: app
-          owner: xDAEKF4
-          repo: Arca-releases
+          owner: ensobre
+          repo: Ensobre-releases
           releaseCommitish: main
           includeUpdaterJson: true
           tagName: ${{ env.TAG }}
